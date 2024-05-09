@@ -17,12 +17,16 @@ import java.util.List;
 @RequestMapping("events")
 public class EventController {
 
-    private static List<String> events = new ArrayList<>(); //only exists during lifetime of application, lose when restart with static will learn database soon
+    private static List<String> events = new ArrayList<>();
+ //only exists during lifetime of application, lose when restart with static will learn database soon
 
     @GetMapping
     public String displayAllEvents(Model model) {
+        model.addAttribute("title", "All Events");
+
         //use new static field to display events
         model.addAttribute("events", events);
+
 
 //        List<String> events = new ArrayList<>();
 //        events.add("Code With Pride");
@@ -36,15 +40,17 @@ public class EventController {
 
     // lives at /events/create
     @GetMapping("create")
-    public String displayCreateEventForm() {
+    public String displayCreateEventForm(Model model) {
+        model.addAttribute("title", "Create Event");
         return "events/create";
     }
 
+
     //lives at /events/create
     @PostMapping("create")
-    public String createEvent(@RequestParam String eventName) {
+    public String processCreateEventForm(@RequestParam String eventName) {
         events.add(eventName);
-        return "redirect:/events";//redirect to root path of specific controller /events
+        return "redirect:/events";
     }
 
 }
