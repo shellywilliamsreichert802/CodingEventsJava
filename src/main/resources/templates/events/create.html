@@ -1,19 +1,27 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org/">
 <head th:replace="fragments :: head"></head>
+<body class="container">
 
-<body>
-
-<h1>Create Event</h1>
-
-<nav th:replace="fragments :: navigation"></nav>
+<header th:replace="fragments :: header"></header>
 
 <!-- Add info to specify how form should be be submitted. Will right handler that lives in action attribute /event/create bc add post handler to same route form lives at be okay living next to ea other bc one will handle Get one at Post Requests so action is events/create could leave action attibute off bc of this -->
 <form method="post">
+   <div class="form-group">
+      <label>Name
    <!-- Remember name attribute of form element gives it a label that's used when submitting the data -->
-   <input type="text" name="eventName">
+         <input type="text" name="eventName" class="form-control">
+      </label>
+   </div>
+   <div class="form-group">
+      <label>Description
+         <input type="text" name="eventDescription"  class="form-control">
+      </label>
+   </div>
    <!-- Use value attribute to specify text that goes on the button -->
-   <input type="submit" value="Create Event">
+   <div class="form-group">
+      <input type="submit" value="Create Event" class="btn btn-success">
+   </div>
 </form>
 
 </body>
