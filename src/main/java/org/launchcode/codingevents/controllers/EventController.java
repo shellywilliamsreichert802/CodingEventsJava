@@ -1,10 +1,13 @@
 package org.launchcode.codingevents.controllers;
 
+import jakarta.validation.Valid;
 import org.launchcode.codingevents.data.EventData;
 import org.launchcode.codingevents.models.Event;
+import org.launchcode.codingevents.models.EventType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,16 +44,24 @@ public class EventController {
     @GetMapping("create")
     public String displayCreateEventForm(Model model) {
         model.addAttribute("title", "Create Event");
-//        model.addAttribute("events", EventData.getAll());
+        model.addAttribute(new Event());
+        model.addAttribute("types", EventType.values());//rtn array of 4 diff types of enums
         return "events/create";
     }
 
 
     //lives at /events/create
     @PostMapping("create")
-    public String processCreateEventForm(@ModelAttribute Event newEvent) {
+    public String processCreateEventForm(@ModelAttribute @Valid Event newEvent,
+                                         Errors errors, Model model) {
 //        EventData.add(new Event(eventName, eventDescription));
 //        EventData.add(new Event(eventName, eventDescription));
+        if(errors.hasErrors()) {
+            model.addAttribute("title", "Create Event");
+//            model.addAttribute("errorMsg", "Bad data!");
+            return "events/create";
+        }
+
         EventData.add(newEvent);
         return "redirect:/events";
     }
