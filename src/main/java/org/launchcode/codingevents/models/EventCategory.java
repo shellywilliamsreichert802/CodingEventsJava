@@ -8,7 +8,7 @@ public class EventCategory extends AbstractEntity {
 
 
     @Size(min=3, message="Name must be at least 3 characters long")
-    private String name;
+    private String name; //label we give to each of our category objects
 
     public EventCategory(@Size(min = 3, message = "Name must be at least 3 characters long") String name) {
         this.name = name;

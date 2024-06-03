@@ -29,14 +29,15 @@
       <p class="error" th:errors="${event.contactEmail}"></p>
    </div>
    <div class="form-group">
-      <label>Type
-         <select th:field="${event.type}">
+      <label>Category
+         <select th:field="${event.eventCategory}">
          <!--loop over once for ea item in array-->
-            <option th:each="type : ${types}"
-                    th:value="${type}"
-                    th:text="${type.displayName}"
+            <option th:each="eventCategory : ${categories}"
+                    th:value="${eventCategory.id}"
+                    th:text="${eventCategory.name}"
             ></option>
          </select>
+         <p class="error" th:errors="${event.eventCategory}"></p>
       </label>
    </div>
    <!-- Use value attribute to specify text that goes on the button -->

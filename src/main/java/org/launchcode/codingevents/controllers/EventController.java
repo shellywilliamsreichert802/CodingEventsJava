@@ -1,14 +1,14 @@
 package org.launchcode.codingevents.controllers;
 
 import jakarta.validation.Valid;
+import org.launchcode.codingevents.data.EventCategoryRepository;
 import org.launchcode.codingevents.data.EventRepository;
 import org.launchcode.codingevents.models.Event;
-import org.launchcode.codingevents.models.EventType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by Chris Bay
@@ -23,6 +23,9 @@ public class EventController {
     private EventRepository eventRepository; //use instance of an interface from EventRepository data
     // findAll, save, findById methods  we can use with CrudREpository
 
+    @Autowired
+    private EventCategoryRepository eventCategoryRepository;
+
     @GetMapping
     public String displayAllEvents(Model model) {
         model.addAttribute("title", "All Events");
@@ -35,7 +38,7 @@ public class EventController {
     public String displayCreateEventForm(Model model) {
         model.addAttribute("title", "Create Event");
         model.addAttribute(new Event());
-        model.addAttribute("types", EventType.values());
+        model.addAttribute("categories", eventCategoryRepository.findAll()); //use respository to fetch all events
         return "events/create";
     }
 
