@@ -1,33 +1,31 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
-<head th:replace="fragments :: head"></head>
-
+<head th:replace="~{fragments :: head}"></head>
 <body class="container">
 
 <!--<h1>All Events</h1>-->
 
-<header th:replace="fragments :: header"></header>
+<header th:replace="~{fragments :: header}"></header>
 
 <!--<p th:unless="${events} and ${events.size()}">No events!</p> &lt;!&ndash;DOES NOT WORK???? unless this boolean evalute to true display this element if false will display / do I have a non null variable called events are there something inside variable then render&ndash;&gt;-->
 
 <table class="table table-striped">
     <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Contact Email</th>
-            <!-- other table headers -->
-            <th>Category</th>
-        </tr>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Contact Email</th>
+        <th>Category</th>
+    </tr>
     </thead>
     <tr th:each="event : ${events}">
         <td th:text="${event.id}"></td>
         <td th:text="${event.name}"></td>
         <td th:text="${event.description}"></td>
         <td th:text="${event.contactEmail}"></td>
-        <!-- category is field and we want .name of that category -->
         <td th:text="${event.eventCategory.name}"></td>
+        <!-- category is field and we want .name of that category -->
     </tr>
 </table>
 
