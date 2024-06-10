@@ -1,16 +1,16 @@
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
-<head th:replace="fragments :: head"></head>
+<head th:replace="~{fragments :: head}"></head>
 <body class="container">
 
-<header th:replace="fragments :: header"></header>
+<header th:replace="~{fragments :: header}"></header>
 
 <p th:text="${errorMsg}" style="color:red;"></p>
 
 <form method="post">
    <div class="form-group">
       <label>Name
-   <!-- Remember name attribute of form element gives it a label that's used when submitting the data -->
          <input th:field="${event.name}" class="form-control">
       </label>
       <p class="error" th:errors="${event.name}"></p>
@@ -30,7 +30,6 @@
    <div class="form-group">
       <label>Category
          <select th:field="${event.eventCategory}">
-         <!--loop over once for ea item in array-->
             <option th:each="eventCategory : ${categories}"
                     th:value="${eventCategory.id}"
                     th:text="${eventCategory.name}"
@@ -39,7 +38,6 @@
          <p class="error" th:errors="${event.eventCategory}"></p>
       </label>
    </div>
-   <!-- Use value attribute to specify text that goes on the button -->
    <div class="form-group">
       <input type="submit" value="Create" class="btn btn-success">
    </div>

@@ -1,8 +1,10 @@
+
 package org.launchcode.codingevents.controllers;
 
 import jakarta.validation.Valid;
 import org.launchcode.codingevents.data.EventCategoryRepository;
 import org.launchcode.codingevents.data.EventRepository;
+import org.launchcode.codingevents.data.TagRepository;
 import org.launchcode.codingevents.models.Event;
 import org.launchcode.codingevents.models.EventCategory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,29 +15,26 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-/**
- * Created by Chris Bay
- */
+
 @Controller
 @RequestMapping("events")
 public class EventController {
-    //    private static List<Event> events = new ArrayList<>();
-    //only exists during lifetime of application, lose when restart with static will learn database soon
 
-    @Autowired //filed will be auto-wired up with an actual object
-    private EventRepository eventRepository; //use instance of an interface from EventRepository data
-    // findAll, save, findById methods  we can use with CrudREpository
+    @Autowired
+    private EventRepository eventRepository;
 
     @Autowired
     private EventCategoryRepository eventCategoryRepository;
 
+    @Autowired
+    private TagRepository tagRepository;
+
     @GetMapping
-    public String displayAllEvents(@RequestParam(required = false) Integer categoryId, Model model) {
+    public String displayEvents(@RequestParam(required = false) Integer categoryId, Model model) {
 
         if (categoryId == null) {
             model.addAttribute("title", "All Events");
             model.addAttribute("events", eventRepository.findAll());
-
         } else {
             Optional<EventCategory> result = eventCategoryRepository.findById(categoryId);
             if (result.isEmpty()) {
@@ -46,28 +45,23 @@ public class EventController {
                 model.addAttribute("events", category.getEvents());
             }
         }
+
         return "events/index";
     }
 
-    // lives at /events/create
     @GetMapping("create")
     public String displayCreateEventForm(Model model) {
         model.addAttribute("title", "Create Event");
         model.addAttribute(new Event());
-        model.addAttribute("categories", eventCategoryRepository.findAll()); //use respository to fetch all events
+        model.addAttribute("categories", eventCategoryRepository.findAll());
         return "events/create";
     }
 
-
-    //lives at /events/create
     @PostMapping("create")
     public String processCreateEventForm(@ModelAttribute @Valid Event newEvent,
                                          Errors errors, Model model) {
-//        EventData.add(new Event(eventName, eventDescription));
-//        EventData.add(new Event(eventName, eventDescription));
         if(errors.hasErrors()) {
             model.addAttribute("title", "Create Event");
-//            model.addAttribute("errorMsg", "Bad data!");
             return "events/create";
         }
 
@@ -87,7 +81,7 @@ public class EventController {
 
         if (eventIds != null) {
             for (int id : eventIds) {
-                eventRepository.deleteById(id); //.delete is different takes actual object this takes primary key for object so be careful which you use
+                eventRepository.deleteById(id);
             }
         }
 
@@ -105,9 +99,40 @@ public class EventController {
             Event event = result.get();
             model.addAttribute("title", event.getName() + " Details");
             model.addAttribute("event", event);
+//            model.addAttribute("tags", event.getTags());
         }
 
         return "events/detail";
     }
+
+    // responds to /events/add-tag?eventId=13
+//    @GetMapping("add-tag")
+//    public String displayAddTagForm(@RequestParam Integer eventId, Model model){
+//        Optional<Event> result = eventRepository.findById(eventId);
+//        Event event = result.get();
+//        model.addAttribute("title", "Add Tag to: " + event.getName());
+//        model.addAttribute("tags", tagRepository.findAll());
+//        EventTagDTO eventTag = new EventTagDTO();
+//        model.addAttribute("eventTag", eventTag);
+//        return "events/add-tag.html";
+//    }
+
+//    @PostMapping("add-tag")
+//    public String processAddTagForm(@ModelAttribute @Valid EventTagDTO eventTag,
+//                                    Errors errors,
+//                                    Model model){
+//
+//        if (!errors.hasErrors()) {
+//            Event event = eventTag.getEvent();
+//            Tag tag = eventTag.getTag();
+//            if (!event.getTags().contains(tag)){
+//                event.addTag(tag);
+//                eventRepository.save(event);
+//            }
+//            return "redirect:detail?eventId=" + event.getId();
+//        }
+//
+//        return "redirect:add-tag";
+//    }
 
 }

@@ -14,7 +14,7 @@ import java.util.List;
 public class EventCategory extends AbstractEntity {
 
     @Size(min=3, message="Name must be at least 3 characters long")
-    private String name; //label we give to each of our category objects
+    private String name;
 
     @OneToMany(mappedBy = "eventCategory")
     private final List<Event> events = new ArrayList<>();
@@ -41,4 +41,5 @@ public class EventCategory extends AbstractEntity {
     public String toString() {
         return name;
     }
+
 }
